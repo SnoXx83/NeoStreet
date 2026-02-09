@@ -1,21 +1,39 @@
-create table user (
-  id int unsigned primary key auto_increment not null,
-  email varchar(255) not null unique,
-  password varchar(255) not null
+CREATE TABLE tag (
+  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  label VARCHAR(255) NOT NULL
 );
 
-create table item (
-  id int unsigned primary key auto_increment not null,
-  title varchar(255) not null,
-  user_id int unsigned not null,
-  foreign key(user_id) references user(id)
+CREATE TABLE product (
+  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  name VARCHAR(255) NOT NULL UNIQUE,
+  description VARCHAR(255) NOT NULL,
+  price VARCHAR(50) NOT NULL,
+  image_url VARCHAR(255) NOT NULL,
+  stock INT NOT NULL,
+  tag_id INT UNSIGNED,
+  FOREIGN KEY(tag_id) REFERENCES tag(id)
 );
 
-insert into user(id, email, password)
-values
-  (1, "jdoe@mail.com", "123456");
+CREATE TABLE user (
+  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  lastname VARCHAR(255) NOT NULL,
+  firstname VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(50) NOT NULL,
+  logo_url VARCHAR(255) NOT NULL
+);
 
-insert into item(id, title, user_id)
-values
-  (1, "Stuff", 1),
-  (2, "Doodads", 1);
+CREATE TABLE cart (
+  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  user_id INT UNSIGNED,
+  FOREIGN KEY(user_id) REFERENCES user(id)
+);
+
+CREATE TABLE cart_product (
+  id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  quantity INT NOT NULL,
+  cart_id INT UNSIGNED NOT NULL, 
+  product_id INT UNSIGNED NOT NULL,
+  FOREIGN KEY(cart_id) REFERENCES cart(id),
+  FOREIGN KEY(product_id) REFERENCES product(id)
+);
