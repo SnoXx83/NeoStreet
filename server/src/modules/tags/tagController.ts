@@ -1,16 +1,16 @@
 import type { RequestHandler } from "express";
 
 // Import access to data
-import itemRepository from "./itemRepository";
+import tagRepository from "./tagRepository";
 
 // The B of BREAD - Browse (Read All) operation
 const browse: RequestHandler = async (req, res, next) => {
   try {
-    // Fetch all items
-    const items = await itemRepository.readAll();
+    // Fetch all tags
+    const tags = await tagRepository.readAll();
 
-    // Respond with the items in JSON format
-    res.json(items);
+    // Respond with the tags in JSON format
+    res.json(tags);
   } catch (err) {
     // Pass any errors to the error-handling middleware
     next(err);
@@ -20,16 +20,16 @@ const browse: RequestHandler = async (req, res, next) => {
 // The R of BREAD - Read operation
 const read: RequestHandler = async (req, res, next) => {
   try {
-    // Fetch a specific item based on the provided ID
-    const itemId = Number(req.params.id);
-    const item = await itemRepository.read(itemId);
+    // Fetch a specific tag based on the provided ID
+    const tagId = Number(req.params.id);
+    const tag = await tagRepository.read(tagId);
 
-    // If the item is not found, respond with HTTP 404 (Not Found)
-    // Otherwise, respond with the item in JSON format
-    if (item == null) {
+    // If the tag is not found, respond with HTTP 404 (Not Found)
+    // Otherwise, respond with the tag in JSON format
+    if (tag == null) {
       res.sendStatus(404);
     } else {
-      res.json(item);
+      res.json(tag);
     }
   } catch (err) {
     // Pass any errors to the error-handling middleware
@@ -40,16 +40,15 @@ const read: RequestHandler = async (req, res, next) => {
 // The A of BREAD - Add (Create) operation
 const add: RequestHandler = async (req, res, next) => {
   try {
-    // Extract the item data from the request body
-    const newItem = {
-      title: req.body.title,
-      user_id: req.body.user_id,
+    // Extract the tag data from the request body
+    const newtag = {
+      label: req.body.label,
     };
 
-    // Create the item
-    const insertId = await itemRepository.create(newItem);
+    // Create the tag
+    const insertId = await tagRepository.create(newtag);
 
-    // Respond with HTTP 201 (Created) and the ID of the newly inserted item
+    // Respond with HTTP 201 (Created) and the ID of the newly inserted tag
     res.status(201).json({ insertId });
   } catch (err) {
     // Pass any errors to the error-handling middleware
