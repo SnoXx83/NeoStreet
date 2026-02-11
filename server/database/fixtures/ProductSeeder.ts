@@ -19,9 +19,8 @@ class ProductSeeder extends AbstractSeeder {
         stock: this.faker.number.int({ min: 1, max: 100 }),
         tag_id: tagRef.insertId,
         refName: `product_${i}`,
-      }as object);
+      } as object);
     }
   }
 }
-
 export default ProductSeeder;

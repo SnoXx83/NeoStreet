@@ -22,8 +22,6 @@ class TagSeeder extends AbstractSeeder {
         password: this.faker.lorem.word(),
         logo_url: this.faker.number.int(),
       };
-
-
       this.insert(fakeUser);
     }
   }
