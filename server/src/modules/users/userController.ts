@@ -1,8 +1,8 @@
 import type { RequestHandler } from "express";
 
 // Import access to data
-import tagRepository from "./tagRepository";
-import userRepository from "../users/userRepository";
+import tagRepository from "../tags/tagRepository";
+import userRepository from "./userRepository";
 
 // The B of BREAD - Browse (Read All) operation
 const browse: RequestHandler = async (req, res, next) => {
