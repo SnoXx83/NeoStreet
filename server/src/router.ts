@@ -7,11 +7,11 @@ const router = express.Router();
 /* ************************************************************************* */
 
 // Define item-related routes
-import itemActions from "./modules/tags/tagController";
+import tagController from "./modules/tags/tagController";
 
-router.get("/api/items", itemActions.browse);
-router.get("/api/items/:id", itemActions.read);
-router.post("/api/items", itemActions.add);
+router.get("/api/tags", tagController.browse);
+router.get("/api/tags/:id", tagController.read);
+router.post("/api/tags", tagController.add);
 
 /* ************************************************************************* */
 

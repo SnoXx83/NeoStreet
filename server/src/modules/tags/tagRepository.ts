@@ -7,6 +7,7 @@ class TagRepository {
   // The C of CRUD - Create operation
 
   async create(tag: Omit<Tag, "id">) {
+    console.log("create() tag.label =", tag.label, typeof tag.label);
     // Execute the SQL INSERT query to add a new tag to the "tag" table
     const [result] = await databaseClient.query<Result>(
       "insert into tag (label) values (?)",

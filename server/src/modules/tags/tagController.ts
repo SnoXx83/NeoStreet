@@ -41,13 +41,9 @@ const read: RequestHandler = async (req, res, next) => {
 const add: RequestHandler = async (req, res, next) => {
   try {
     // Extract the tag data from the request body
-    const newtag = {
-      label: req.body.label,
-    };
-
+    const { label } = req.body;
     // Create the tag
-    const insertId = await tagRepository.create(newtag);
-
+    const insertId = await tagRepository.create({ label });
     // Respond with HTTP 201 (Created) and the ID of the newly inserted tag
     res.status(201).json({ insertId });
   } catch (err) {
@@ -56,4 +52,4 @@ const add: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browse, read, add };
+export default { browse, read, add};
