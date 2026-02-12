@@ -17,7 +17,6 @@ router.post("/api/products", productController.add);
 // router.get("/api/users/:id", userController.read);
 // router.post("/api/users", userController.add);
 
-
 /* ************************************************************************* */
 
 export default router;
