@@ -57,22 +57,22 @@ const read: RequestHandler = async (req, res, next) => {
 const add: RequestHandler = async (req, res, next) => {
   try {
     // Extract the tag data from the request body
-    const { label } = req.body;
+    // const { label, sdqsd,qsdqsdqs,qsdqsdqs } = req.body;
     // Create the tag
-    const insertId = await tagRepository.create({ label });
+    // const insertId = await tagRepository.create({ label });
     // Respond with HTTP 201 (Created) and the ID of the newly inserted tag
     // Extract the user data from the request body
-    // const newuser = {
-    //   id: req.body.id,
-    //   first_name: req.body.first_name,
-    //   last_name: req.body.last_name,
-    //   email: req.body.email,
-    //   password: req.body.password,
-    //   logo_url: req.body.logo_url,
-    // };
+    const newuser = {
+      id: req.body.id,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      email: req.body.email,
+      password: req.body.password,
+      logo_url: req.body.logo_url,
+    };
 
     // Create the user
-    // const insertId = await userRepository.create(newuser);
+    const insertId = await userRepository.create(newuser);
 
     // Respond with HTTP 201 (Created) and the ID of the newly inserted user
     res.status(201).json({ insertId });

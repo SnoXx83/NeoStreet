@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import productImg from "../assets/images/product-1.jpg";
+import { Link } from "react-router";
+// import productImg from "../assets/images/product-1.jpg";
 
 type Product = {
   id: number;
@@ -31,20 +32,28 @@ export default function ProductDisplay() {
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-8 text-center">Tous les produits</h1>
+      <h1 className="text-2xl font-bold mt-15 mb-20 text-center ">
+        Tous les produits
+      </h1>
 
-      <div className="flex flex-wrap  justify-center ">
+      <div className="flex flex-wrap justify-center ">
         {products.map((product) => (
-          <div key={product.id} className="mb-20 mx-3.5 md:mx-0   ">
-            <img src={productImg} alt="product-1" className="w-100  h-140  " />
-            <div className="mt-4 max-w-100 px-3">
-              <h3 className="font-bold mb-4"> {product.name}</h3>
+          <Link
+            key={product.id}
+            to={`/products/${product.id}`}
+            className="mb-20 mx-3.5 md:mx-0"
+          >
+            <img
+              src={product.image_url}
+              alt="product-1"
+              className="w-100  h-140 object-cover"
+            />
+            <div className="mt-4 max-w-90 ">
+              <h3 className="font-bold "> {product.name}</h3>
               <p className="text-gray-500 text-sm">{product.description} </p>
-              <div className="flex justify-between items-center my-2 ">
-                <p className="font-semibold mt-2">{product.price} €</p>
-              </div>
+              <p className="font-bold mt-2">{product.price} €</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
