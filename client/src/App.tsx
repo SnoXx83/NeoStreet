@@ -1,11 +1,11 @@
 import "./App.css";
-import ProductDisplay from "./components/ProductDisplay";
 import NavBar from "./components/NavBar";
+import ProductDisplay from "./components/ProductDisplay";
 function App() {
   return (
     <>
       <main className="text-box">
-        <NavBar/>
+        <NavBar />
         <div>
           <ProductDisplay />
         </div>
