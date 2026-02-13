@@ -6,7 +6,7 @@ function App() {
     <>
       <main className="text-box">
         <div>
-         <ProductDisplay/>
+          <ProductDisplay />
         </div>
       </main>
     </>
