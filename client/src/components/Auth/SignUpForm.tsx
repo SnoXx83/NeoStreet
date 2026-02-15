@@ -51,7 +51,7 @@ export default function SignUpForm() {
         </div>
 
         <button
-          type="submit"
+          type="button"
           className="w-full mt-8 bg-white text-black font-bold py-3 rounded-lg border-2 border-white
           hover:bg-black hover:text-white transition-all duration-300 cursor-pointer uppercase tracking-widest text-sm"
         >
@@ -64,7 +64,7 @@ export default function SignUpForm() {
             to="/Sign-in"
             className="text-white font-bold hover:underline underline-offset-4"
           >
-            S'inscrire
+            Se connecter
           </Link>
         </p>
       </form>

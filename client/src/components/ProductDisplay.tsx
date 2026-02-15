@@ -49,7 +49,10 @@ export default function ProductDisplay() {
               className="w-100  h-140 object-cover"
             />
             <div className="mt-4 max-w-90 ">
-              <h3 className="font-bold "> {product.name}</h3>
+              <h3 className="font-bold font-serif text-xl  ">
+                {" "}
+                {product.name}
+              </h3>
               <p className="text-gray-500 text-sm">{product.description} </p>
               <p className="font-bold mt-2">{product.price} €</p>
             </div>
