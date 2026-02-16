@@ -11,6 +11,7 @@ import LoginForm from "./components/Auth/LoginForm";
 import SignUpForm from "./components/Auth/SignUpForm";
 import ProductDetails, { productLoader } from "./components/ProductDetails";
 import ProductDisplay from "./components/ProductDisplay";
+import CreateProductForm from "./components/ProductForm";
 
 // Import additional components for new routes
 // Try creating these components in the "pages" folder
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
             path: ":id",
             element: <ProductDetails />,
             loader: productLoader,
+          },
+          {
+            path: "new-product",
+            element: <CreateProductForm />,
           },
         ],
       },

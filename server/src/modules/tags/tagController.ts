@@ -12,11 +12,6 @@ const browse: RequestHandler = async (req, res, next) => {
 
     // Respond with the tags in JSON format
     res.json(tags);
-    // Fetch all users
-    const users = await userRepository.readAll();
-
-    // Respond with the users in JSON format
-    res.json(users);
   } catch (err) {
     // Pass any errors to the error-handling middleware
     next(err);

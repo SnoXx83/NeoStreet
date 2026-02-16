@@ -19,8 +19,8 @@ export default function ProductDisplay() {
     async function getAllProduct() {
       try {
         const response = await fetch("http://localhost:3310/api/products");
-        const result = response.json();
-        setProducts(await result);
+        const result = await response.json();
+        setProducts(result);
       } catch (error) {
         console.log(error);
       }
