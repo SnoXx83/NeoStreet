@@ -9,6 +9,7 @@ import { RouterProvider, createBrowserRouter } from "react-router";
 import App from "./App";
 import LoginForm from "./components/Auth/LoginForm";
 import SignUpForm from "./components/Auth/SignUpForm";
+import Cart from "./components/Cart";
 import ProductDetails, { productLoader } from "./components/ProductDetails";
 import ProductDisplay from "./components/ProductDisplay";
 import CreateProductForm from "./components/ProductForm";
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: "Sign-up",
         element: <SignUpForm />,
+      },
+      {
+        path: "panier",
+        element: <Cart />,
       },
     ],
   },

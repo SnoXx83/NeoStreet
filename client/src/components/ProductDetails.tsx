@@ -1,6 +1,6 @@
 import { Link, type LoaderFunctionArgs, useLoaderData } from "react-router";
 
-type Product = {
+export type Product = {
   id: number;
   name: string;
   description: string;
@@ -22,6 +22,21 @@ export async function productLoader({ params }: LoaderFunctionArgs) {
 
 export default function ProductDetails() {
   const product = useLoaderData() as Product;
+
+  const handleAddToCart = () => {
+    const rawData: string = localStorage.getItem("cart") ?? "[]";
+    const existingCart: Product[] = JSON.parse(rawData);
+
+    const isAlreadyInCart = existingCart.find((item) => item.id === product.id);
+
+    if (isAlreadyInCart) {
+      alert("Déjà dans le panier !");
+    } else {
+      const updatedCart = [...existingCart, product];
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      alert("Ajouté !");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white py-15 px-4 sm:px-6 lg:px-8">
@@ -70,17 +85,20 @@ export default function ProductDetails() {
 
             <div className="mt-auto space-y-4">
               <div className="flex items-center border border-gray-200 w-max rounded-lg">
-                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                <button className="px-4 py-2 hover:bg-gray-50">-</button>
+                <button type="button" className="px-4 py-2 hover:bg-gray-50">
+                  -
+                </button>
                 <span className="px-4 py-2 font-medium border-x border-gray-200">
                   1
                 </span>
-                {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-                <button className="px-4 py-2 hover:bg-gray-50">+</button>
+                <button type="button" className="px-4 py-2 hover:bg-gray-50">
+                  +
+                </button>
               </div>
 
               <button
                 type="button"
+                onClick={handleAddToCart}
                 disabled={product.stock === 0}
                 className={`w-full py-4 px-8 rounded-xl font-bold text-white transition-all duration-300 transform active:scale-95 ${
                   product.stock > 0
