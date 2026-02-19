@@ -21,7 +21,9 @@ router.post("/api/products", productController.add);
 import userController from "./modules/users/userController";
 router.get("/api/users", userController.browse);
 router.get("/api/users/:id", userController.read);
-router.post("/api/user", userController.add);
+router.post("/api/users", userController.add);
+
+router.post("/api/login", userController.login);
 
 /* ************************************************************************* */
 

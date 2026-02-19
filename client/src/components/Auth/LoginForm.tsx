@@ -1,9 +1,38 @@
 import { Link } from "react-router";
 
 export default function LoginForm() {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("http://localhost:3310/api/login", {
+        method: "POST",
+        mode: "cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const user = await response.json();
+        alert(`Bienvenue ${user.firstname} !`);
+        // Ici, tu stockeras plus tard ton token (JWT)
+      } else {
+        alert("Email ou mot de passe incorrect");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erreur serveur");
+    }
+  };
+
   return (
     <div className="flex justify-center mt-20 px-2">
-      <form className="w-full max-w-md bg-black p-8 rounded-2xl shadow-2xl my-10 border border-gray-800">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md bg-black p-8 rounded-2xl shadow-2xl my-10 border border-gray-800"
+      >
         <h1 className="text-center text-2xl font-extrabold mb-2 text-white tracking-tight">
           CONNEXION
         </h1>
@@ -15,7 +44,7 @@ export default function LoginForm() {
               EMAIL
             </label>
             <input
-              className="w-full bg-white text-white border border-zinc-700 p-3 rounded-lg focus:ring-2 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
+              className="w-full bg-white text-black border border-zinc-700 p-3 rounded-lg focus:ring-2 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
               type="email"
               name="email"
               placeholder="johnDoe@email.com"
@@ -31,7 +60,7 @@ export default function LoginForm() {
               </label>
             </div>
             <input
-              className="w-full bg-white text-white border border-zinc-700 p-3 rounded-lg focus:ring-2 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
+              className="w-full bg-white text-black border border-zinc-700 p-3 rounded-lg focus:ring-2 focus:ring-white focus:outline-none transition-all placeholder:text-gray-600"
               type="password"
               name="password"
               placeholder="••••••••"

@@ -1,8 +1,17 @@
+import type { RowDataPacket } from "mysql2";
 import databaseClient from "../../../database/client";
 
 import type { Result, Rows } from "../../../database/client";
 
 import type { User } from "./userEntity";
+
+interface UserRow extends RowDataPacket {
+  id: number;
+  email: string;
+  password: string;
+  firstname: string;
+  lastname: string;
+}
 
 class UserRepository {
   // The C of CRUD - Create operation
@@ -10,18 +19,24 @@ class UserRepository {
   async create(user: Omit<User, "id">) {
     // Execute the SQL INSERT query to add a new user to the "user" table
     const [result] = await databaseClient.query<Result>(
-      "insert into user (first_name, last_name, email, password, logo_url) values (?, ?, ?, ?, ?)",
-      [
-        user.first_name,
-        user.last_name,
-        user.email,
-        user.password,
-        user.logo_url,
-      ],
+      "insert into user (firstname, lastname, email, password, logo_url) values (?, ?, ?, ?, ?)",
+      [user.firstname, user.lastname, user.email, user.password, user.logo_url],
     );
 
     // Return the ID of the newly inserted user
     return result.insertId;
+  }
+
+  async readByEmail(email: string) {
+    // On récupère toutes les colonnes pour pouvoir vérifier le mot de passe haché
+    const [rows] = await databaseClient.query<UserRow[]>(
+      "SELECT * FROM user WHERE email = ?",
+      [email],
+    );
+
+    // database.query renvoie un tableau.
+    // On retourne la première ligne si elle existe, sinon undefined.
+    return rows[0];
   }
 
   // The Rs of CRUD - Read operations

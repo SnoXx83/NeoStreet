@@ -1,9 +1,9 @@
 import type { RequestHandler } from "express";
 
+import argon2 from "argon2";
 // Import access to data
 import tagRepository from "../tags/tagRepository";
 import userRepository from "./userRepository";
-
 // The B of BREAD - Browse (Read All) operation
 const browse: RequestHandler = async (req, res, next) => {
   try {
@@ -62,18 +62,21 @@ const add: RequestHandler = async (req, res, next) => {
     // const insertId = await tagRepository.create({ label });
     // Respond with HTTP 201 (Created) and the ID of the newly inserted tag
     // Extract the user data from the request body
+
+    const { firstname, lastname, email, password, logo_url } = req.body;
+
+    const hashedPassword = await argon2.hash(password);
+
     const newuser = {
-      id: req.body.id,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      email: req.body.email,
-      password: req.body.password,
-      logo_url: req.body.logo_url,
+      firstname,
+      lastname,
+      email,
+      password: hashedPassword,
+      logo_url: "qsdqs",
     };
 
     // Create the user
     const insertId = await userRepository.create(newuser);
-
     // Respond with HTTP 201 (Created) and the ID of the newly inserted user
     res.status(201).json({ insertId });
   } catch (err) {
@@ -82,4 +85,34 @@ const add: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { browse, read, add };
+const login: RequestHandler = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    // 1. Chercher l'utilisateur par son email
+    // Tu dois avoir une méthode userRepository.findByEmail(email)
+    const user = await userRepository.readByEmail(email);
+
+    if (!user) {
+      // Si l'utilisateur n'existe pas, on renvoie une 401
+      res.status(401).json({ message: "Identifiants invalides" });
+      return;
+    }
+
+    // 2. Vérifier le mot de passe avec Argon2
+    // argon2.verify(hash_en_bdd, mot_de_passe_en_clair)
+    const isVerified = await argon2.verify(user.password, password);
+
+    if (isVerified) {
+      // 3. Succès : On retire le mot de passe de l'objet avant de répondre
+      res.status(200).json(user);
+    } else {
+      // Échec : Mot de passe incorrect
+      res.status(401).json({ message: "Identifiants invalides" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+export default { browse, read, add, login };

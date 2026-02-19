@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router";
 
 export type SignUpFormData = {
@@ -6,49 +5,29 @@ export type SignUpFormData = {
   firstname: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  logo_url: null;
 };
 
 export default function SignUpForm() {
-  const [formData, setFormData] = useState<SignUpFormData>({
-    lastname: "",
-    firstname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  // const navigate = useNavigate(); // ← Pour rediriger après inscription
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name as keyof SignUpFormData]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
 
-    // Vérification mot de passe
-    if (formData.password !== formData.confirmPassword) {
+    const { password, confirmPassword } = data;
+
+    if (password !== confirmPassword) {
       alert("Les mots de passe ne correspondent pas");
-      return;
+      return; // On arrête l'exécution ici
     }
 
     try {
       // Envoi des données vers le backend
-      const response = await fetch("http://localhost:3000/api/users", {
+      const response = await fetch("http://localhost:3310/api/users", {
         method: "POST",
+        mode: "cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          first_name: formData.firstname,
-          last_name: formData.lastname,
-          email: formData.email,
-          password: formData.password,
-          logo_url: null,
-        }),
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
@@ -79,8 +58,6 @@ export default function SignUpForm() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input
               name="lastname"
-              value={formData.lastname}
-              onChange={handleChange}
               className="w-full bg-white text-black border border-zinc-700 p-3 rounded-lg focus:ring-2 focus:ring-white focus:outline-none transition-all placeholder:text-gray-500"
               type="text"
               placeholder="Nom"
@@ -88,8 +65,6 @@ export default function SignUpForm() {
             />
             <input
               name="firstname"
-              value={formData.firstname}
-              onChange={handleChange}
               className="w-full bg-white text-black border border-zinc-700 p-3 rounded-lg focus:ring-2 focus:ring-white focus:outline-none transition-all placeholder:text-gray-500"
               type="text"
               placeholder="Prénom"
@@ -99,8 +74,6 @@ export default function SignUpForm() {
 
           <input
             name="email"
-            value={formData.email}
-            onChange={handleChange}
             className="w-full bg-white text-black border border-zinc-700 p-3 rounded-lg focus:ring-2 focus:ring-white focus:outline-none transition-all placeholder:text-gray-500"
             type="email"
             placeholder="Adresse Email"
@@ -108,8 +81,6 @@ export default function SignUpForm() {
           />
           <input
             name="password"
-            value={formData.password}
-            onChange={handleChange}
             className="w-full bg-white text-black border border-zinc-700 p-3 rounded-lg focus:ring-2 focus:ring-white focus:outline-none transition-all placeholder:text-gray-500"
             type="password"
             placeholder="Mot de passe"
@@ -117,8 +88,6 @@ export default function SignUpForm() {
           />
           <input
             name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
             className="w-full bg-white text-black border border-zinc-700 p-3 rounded-lg focus:ring-2 focus:ring-white focus:outline-none transition-all placeholder:text-gray-500"
             type="password"
             placeholder="Confirmer le mot de passe"
