@@ -1,23 +1,31 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router"; // Remplace redirect par useNavigate
+import { useAuth } from "./AuthForm";
 
 export default function LoginForm() {
+  const { login } = useAuth();
+  const navigate = useNavigate(); // Initialise le hook de navigation
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
+    const body = Object.fromEntries(formData.entries());
 
     try {
       const response = await fetch("http://localhost:3310/api/login", {
         method: "POST",
         mode: "cors",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(body),
       });
 
       if (response.ok) {
-        const user = await response.json();
-        alert(`Bienvenue ${user.firstname} !`);
-        // Ici, tu stockeras plus tard ton token (JWT)
+        const data = await response.json();
+        login(data);
+
+        alert(`Bienvenue ${data.user.firstname ?? "utilisateur"} !`);
+
+        // On utilise navigate pour changer de page
+        navigate("/");
       } else {
         alert("Email ou mot de passe incorrect");
       }

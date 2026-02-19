@@ -1,12 +1,18 @@
 // Import necessary modules from React and React Router
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router";
+import {
+  Navigate,
+  Outlet,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router";
 
 /* ************************************************************************* */
 
 // Import the main app component
 import App from "./App";
+import { AuthProvider, useAuth } from "./components/Auth/AuthForm";
 import LoginForm from "./components/Auth/LoginForm";
 import SignUpForm from "./components/Auth/SignUpForm";
 import Cart from "./components/Cart";
@@ -19,6 +25,16 @@ import CreateProductForm from "./components/ProductForm";
 
 // import About from "./pages/About";
 // import Contact from "./pages/Contact";
+
+const ProtectedRoute = () => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <Outlet /> : <Navigate to="/Sign-in" replace />;
+};
+
+const PublicOnlyRoute = () => {
+  const { isAuthenticated } = useAuth();
+  return !isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+};
 
 /* ************************************************************************* */
 
@@ -34,34 +50,35 @@ const router = createBrowserRouter([
         element: <ProductDisplay />, // modif avec la homePage
       },
       {
-        path: "products",
+        element: <PublicOnlyRoute />,
         children: [
           {
-            index: true,
-            element: <ProductDisplay />,
+            path: "Sign-in",
+            element: <LoginForm />,
           },
           {
-            path: ":id",
-            element: <ProductDetails />,
-            loader: productLoader,
+            path: "Sign-up",
+            element: <SignUpForm />,
+          },
+        ],
+      },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: "panier",
+            element: <Cart />,
           },
           {
-            path: "new-product",
+            path: "products/new-product",
             element: <CreateProductForm />,
           },
         ],
       },
       {
-        path: "Sign-in",
-        element: <LoginForm />,
-      },
-      {
-        path: "Sign-up",
-        element: <SignUpForm />,
-      },
-      {
-        path: "panier",
-        element: <Cart />,
+        path: "products/:id",
+        element: <ProductDetails />,
+        loader: productLoader,
       },
     ],
   },
@@ -79,7 +96,9 @@ if (rootElement == null) {
 // Render the app inside the root element
 createRoot(rootElement).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 );
 

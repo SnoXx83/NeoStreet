@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import logo from "../assets/images/NeoStreet.png";
+import { useAuth } from "./Auth/AuthForm";
 
 export default function NavBar() {
+  const { logout, isAuthenticated } = useAuth();
   const [cartCount, setCartCount] = useState(0);
-
   const updateCartCount = () => {
     const rawData = localStorage.getItem("cart") ?? "[]";
     const cart = JSON.parse(rawData);
@@ -34,12 +35,32 @@ export default function NavBar() {
 
         <div className="flex font-semibold text-center items-center gap-6">
           <div className="flex gap-4 border-r border-zinc-800 pr-6">
-            <Link to={"/Sign-in"} className="hover:text-zinc-400 transition">
-              Se connecter
-            </Link>
-            <Link to={"/Sign-up"} className="hover:text-zinc-400 transition">
-              S'inscrire
-            </Link>
+            {!isAuthenticated ? (
+              <>
+                <Link
+                  to={"/Sign-in"}
+                  className="hover:text-zinc-400 transition"
+                >
+                  Se connecter
+                </Link>
+                <Link
+                  to={"/Sign-up"}
+                  className="hover:text-zinc-400 transition"
+                >
+                  S'inscrire
+                </Link>
+              </>
+            ) : (
+              <div className="flex items-center gap-4">
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="text-red-400 hover:text-red-300 text-sm transition"
+                >
+                  Déconnexion
+                </button>
+              </div>
+            )}
           </div>
 
           <Link
