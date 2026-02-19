@@ -23,6 +23,8 @@ router.get("/api/users", userController.browse);
 router.get("/api/users/:id", userController.read);
 router.post("/api/users", userController.add);
 
+router.post("/api/login", userController.login);
+
 /* ************************************************************************* */
 
 export default router;
