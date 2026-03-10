@@ -60,11 +60,13 @@ app.use(
 
 /* ************************************************************************* */
 
+import cookieParser from "cookie-parser";
 // Import the API router
-import router from "./router";
+import { route } from "./router";
 
 // Mount the API router under the "/api" endpoint
-app.use(router);
+app.use(cookieParser());
+app.use(route);
 
 /* ************************************************************************* */
 

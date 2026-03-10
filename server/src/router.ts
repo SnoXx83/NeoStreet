@@ -1,30 +1,31 @@
 import express from "express";
-
-const router = express.Router();
+import authController from "./auth/controller/authController";
+import { verifyToken } from "./middleware/verifyToken";
+import productController from "./modules/products/productController";
+import tagController from "./modules/tags/tagController";
+import userController from "./modules/users/userController";
 
 /* ************************************************************************* */
 // Define Your API Routes Here
 /* ************************************************************************* */
 
-import productController from "./modules/products/productController";
 // Define item-related routes
-import tagController from "./modules/tags/tagController";
-import userController from "./modules/users/userController";
+export const route = express.Router();
 
-router.get("/api/tags", tagController.browse);
-router.get("/api/tags/:id", tagController.read);
-router.post("/api/tags", tagController.add);
+route.get("/tags", tagController.browse);
+route.get("/tags/:id", tagController.read);
+route.post("/tags", tagController.add);
 
-router.get("/api/products", productController.browse);
-router.get("/api/products/:id", productController.read);
-router.post("/api/products", productController.add);
+route.get("/products", productController.browse);
+route.get("/products/:id", productController.read);
+route.post("/products", productController.add);
 
-router.get("/api/users", userController.browse);
-router.get("/api/users/:id", userController.read);
-router.post("/api/users", userController.add);
+route.get("/users", userController.browse);
+// route.get("/users/:id", userController.read);
+route.post("/users", userController.add);
 
-router.post("/api/login", userController.login);
+route.post("/login", authController.login);
+
+route.get("/me", verifyToken, userController.read);
 
 /* ************************************************************************* */
-
-export default router;

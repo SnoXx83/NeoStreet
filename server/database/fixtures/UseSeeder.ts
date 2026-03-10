@@ -16,11 +16,11 @@ class TagSeeder extends AbstractSeeder {
     for (let i = 0; i < 10; i += 1) {
       // Generate fake item data
       const fakeUser = {
-        lastname: this.faker.lorem.word(),
-        firstname: this.faker.lorem.word(),
-        email: this.faker.lorem.word(),
-        password: this.faker.lorem.word(),
-        logo_url: this.faker.number.int(),
+        lastname: this.faker.person.lastName(),
+        firstname: this.faker.person.firstName(),
+        email: this.faker.internet.email(),
+        password: this.faker.internet.password(),
+        logo_url: this.faker.image.avatar(),
       };
       this.insert(fakeUser);
     }
