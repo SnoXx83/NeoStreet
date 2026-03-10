@@ -22,7 +22,7 @@ app.use(express.json());
 import cors from "cors";
 
 if (process.env.CLIENT_URL != null) {
-  app.use(cors({ origin: [process.env.CLIENT_URL] }));
+  app.use(cors({ origin: [process.env.CLIENT_URL], credentials: true }));
 }
 
 // If you need to allow extra origins, you can add something like this:
@@ -66,7 +66,7 @@ import { route } from "./router";
 
 // Mount the API router under the "/api" endpoint
 app.use(cookieParser());
-app.use(route);
+app.use("/api", route);
 
 /* ************************************************************************* */
 

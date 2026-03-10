@@ -32,7 +32,6 @@ export default function SignUpForm() {
 
       if (response.ok) {
         alert("Compte créé !");
-        // navigate("/sign-in"); // ← redirection vers la page de connexion
       } else {
         const errText = await response.text();
         console.error("Erreur backend:", errText);
