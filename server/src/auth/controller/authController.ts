@@ -42,7 +42,13 @@ const login: RequestHandler = async (req, res): Promise<void> => {
       expires: new Date(Date.now() + 8 * 3600000),
     });
 
-    res.status(200).json({ message: "Connexion réussit !" });
+    res.status(200).json({
+      message: "Connexion réussie !",
+      user: {
+        firstname: userIfExist.firstname,
+        email: userIfExist.email,
+      },
+    });
   } catch (err) {
     console.error("Erreur login:", err);
     res.status(500).json({ message: "erreur" });
